@@ -11,7 +11,7 @@ import (
 const (
 	badUserID    = "baduserid"
 	forbidden    = "forbidden"
-	notFountInDB = "notfountindb"
+	notFoundInDB = "notfoundindb"
 	dbTimeout    = "dbtimeout"
 )
 
@@ -63,7 +63,7 @@ type UserInfo struct {
 }
 
 func getUserInfo(userID string) (UserInfo, error) {
-	if userID == notFountInDB {
+	if userID == notFoundInDB {
 		return UserInfo{}, errors.Trace(
 			se.NewNotFound("userID: %s not found", userID))
 	}
