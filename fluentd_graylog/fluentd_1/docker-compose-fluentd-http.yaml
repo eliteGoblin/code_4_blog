@@ -9,6 +9,7 @@ services:
     image: fluent/fluentd:v1.12-1
     volumes:
       - ./conf:/fluentd/etc/
+      - ./sample_log:/var/log
     ports:
       - "8888:8888"
       - "24224:24224"
