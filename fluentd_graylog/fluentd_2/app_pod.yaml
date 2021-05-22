@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: log-demo
+  namespace: graylog-demo
+spec:
+  containers:
+  - name: log-demo-container
+    image: debian
+    command: ["/bin/sh"]
+    args: ["-c", "while true; do echo '{\"time\": \"2021-04-30T15:04:05Z07:00\", \"message\": \"frank debug\", \"severity\": \"info\", \"level\": 6}' && sleep 5; done"]

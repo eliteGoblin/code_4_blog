@@ -1,0 +1,79 @@
+kind: "Template"
+apiVersion: "v1"
+metadata:
+  name: "Log collector DaemonSet"
+  annotations:
+    description: "Template for fluentd log collector DaemonSet"
+labels:
+  template: "fluentd-log-collector-template"
+objects:
+  - kind: DaemonSet
+    apiVersion: apps/v1
+    metadata:
+      name: fluentd-log-collector
+    spec:
+      selector:
+        matchLabels:
+          app: fluentd-log-collector
+      template:
+        metadata:
+          labels:
+            app: fluentd-log-collector
+          name: fluentd-log-collector
+        spec:
+          tolerations:
+          - operator: Exists
+          containers:
+          - name: fluentd
+            image: fluentd_image:0.12
+            ports:
+              - containerPort: 24224
+                hostPort: 24224
+            env:
+            - name: CLUSTER
+              value: $(CLUSTER)
+            - name: LEGACY_LOG_HOST
+              value: $(LEGACY_LOG_HOST)
+            - name: LEGACY_PORT
+              value: "12201"
+            - name: LOG_HOST
+              value: $(LOG_HOST)
+            - name: PORT
+              value: "12201"
+            - name: PROTOCOL
+              value: "tcp"
+            resources:
+              limits:
+                memory: 500Mi
+              requests:
+                cpu: 100m
+                memory: 200Mi
+            volumeMounts:
+            - name: varlog
+              mountPath: /var/log
+            - name: varlibdockercontainers
+              mountPath: /var/lib/docker/containers
+              readOnly: true
+          terminationGracePeriodSeconds: 30
+          volumes:
+          - name: varlog
+            hostPath:
+              path: /var/log
+          - name: varlibdockercontainers
+            hostPath:
+              path: /var/lib/docker/containers
+          serviceAccountName: fluentd
+
+parameters:
+  - name: "CLUSTER"
+    description: "Name of the cluster"
+    required: true
+    parameterType: "string"
+  - name: "LEGACY_LOG_HOST"
+    description: "Log host url of legacy graylog server"
+    required: true
+    parameterType: "string"
+  - name: "LOG_HOST"
+    description: "Log host url"
+    required: true
+    parameterType: "string"

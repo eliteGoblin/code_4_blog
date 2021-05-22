@@ -1,0 +1,1 @@
+this image to kuberenetes cluster, user should set the environment variable `FLUENT_UID` to `0` in order for fluentd to access to mounted volume.
