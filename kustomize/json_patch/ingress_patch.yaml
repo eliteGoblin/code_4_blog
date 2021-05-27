@@ -1,0 +1,7 @@
+- op: add
+  path: /spec/rules/0/http/paths/-
+  value:
+    path: '/canada'
+    backend:
+      serviceName: hoser
+      servicePort: 7703
