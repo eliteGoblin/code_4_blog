@@ -1,0 +1,9 @@
+{{ printf "%t" .Values.favorite }}
+
+{{ list 1 2 3 | toStrings }}
+
+{{ dict 1 2.66 | toJson }}
+
+{{ index (list 1 2 3) 2}}
+
+{{ merge (dict "name" "Frank") (dict "name" "Joe") (dict "name" "Jacob") (dict "addr" "bondi") }}
